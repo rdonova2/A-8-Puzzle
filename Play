@@ -1,0 +1,54 @@
+
+import java.util.*;
+import javax.swing.*;
+
+public class Play {
+	public static List<GameState> explored; // explored stores our marked
+											// vertices
+	public static Deque<GameState> frontier; // frontier is our queue for BFS
+
+	public static void main(String[] args) {
+		int[][] tArr = { { 1, 5, 2 }, { 3, 4, 0 }, { 6, 8, 7 } }; // start
+																	// state,
+																	// i.e. tree
+																	// root
+		GameState start = new GameState(tArr, null); // state with tArr state,
+														// null parent
+		explored = new ArrayList<GameState>();
+		frontier = new ArrayDeque<GameState>();
+		// Perform a Breadth First Search here
+		boolean found = false;
+		GameState current = null;
+		explored.add(start);
+		frontier.add(start);
+
+		while (!frontier.isEmpty() && !found) {
+			current = frontier.removeFirst();
+
+			if (current.isEnd()) {
+				found = true;
+				System.out.println(current);
+				GameState temp = current.parent;
+				while (temp != null) {
+					System.out.println(temp);
+					temp = temp.parent;
+				}
+			}
+
+			else {
+				ArrayList<GameState> templist = new ArrayList<GameState>();
+				templist = current.getAdjacent();
+				for (int i = 0; i < templist.size(); i++)
+
+					if (!explored.contains(templist.get(i)) && !frontier.contains(templist.get(i))) {
+						explored.add(templist.get(i));
+						frontier.add(templist.get(i));
+					}
+			}
+		}
+	}
+	// Note: We will not create the graph or enumerate the edges
+	// The graph is too large to store in memory
+	// We will create the vertices of the graph and edge connections on the fly
+}
+
