@@ -1,16 +1,16 @@
 import java.util.*;
 
-public class GameState {
+//Note: this class has a natural ordering that is inconsistent with equals. 
+public class GameState implements Comparable<GameState>{
+	
 	public int[][] state; 
 	public GameState parent; 
-
+	public int score;
+	public int depth;
+	
 	public GameState() {
 		// initialize state to zeros, parent to null
-		this.state = new int[3][3];
-		for (int row = 0; row < 3; row++)
-			for (int col = 0; col < 3; col++)
-				state[row][col] = 0;
-		parent = null;
+		this(new int[3][3]);
 	}
 
 	public GameState(int[][] state) {
@@ -20,6 +20,9 @@ public class GameState {
 			for (int col = 0; col < 3; col++)
 				state[row][col] = 0;
 		parent = null;
+		
+		score = 0;
+		depth = 0;
 	}
 
 	public GameState(int[][] state, GameState parent) {
@@ -29,6 +32,9 @@ public class GameState {
 			for (int c = 0; c < 3; c++)
 				this.state[i][c] = state[i][c];
 		this.parent = parent;
+		
+		score = 0;
+		depth = parent.depth + 1;
 	}
 
 	public GameState swapRight(GameState s, int row, int col) {
@@ -49,6 +55,7 @@ public class GameState {
 		newState.state[row][col - 1] = lswap1;
 		newState.state[row][col] = lswap2;
 		return newState;
+		
 	}
 
 	public GameState swapUp(GameState s, int row, int col) {
@@ -135,6 +142,15 @@ public class GameState {
 		return array;
 
 	}
+	
+	
+	@Override
+	public int compareTo(GameState x) { 
+		if((this.depth+this.score) > (x.depth + x.score)) 
+			return 1;
+		else
+			return -1;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -169,3 +185,4 @@ public class GameState {
 		return string;
 	}
 }
+
