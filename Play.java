@@ -60,6 +60,48 @@ public class Play {
 	// The graph is too large to store in memory
 	// We will create the vertices of the graph and edge connections on the fly
 	
+	public static int ManhattenInt(GameState startState, GameState endState) { 
+		//Take in 2 arrays of start/end positions return the cost of getting there
+		int[][] start = startState.state; 
+		int[][] end = endState.state; 
+	  
+	  int steps []=new int[start.length*start.length]; 
+	  //how many steps each incorrect position needs to move, length = number of items to move
+	  
+	  int total=0;
+	  int count=0;
+	  //calculating number of steps away each position is
+	  for(int i=0;i<start.length;i++) {
+		  
+		  for(int j=0;j<end.length;j++) {
+			  
+				if(start[i][j]==(end[i][j])){
+					//if the say 0,0 matches 0,0 fine
+					count++;
+				}
+				else {
+					// if it doesn't match loop through end matrix to find match 	 
+					for(int k=0;k<end.length;k++) { 
+						
+						for(int l=0;l<end.length;l++) {
+							
+							if(start[i][j]==(end[k][l]))
+							{
+							steps[count]=Math.abs((i - k)+(j - l));
+							total+=steps[count];
+							count++;
+							
+							}
+						}
+					}
+				}
+			}
+		}
+
+	  //g(n)+h(n)
+	  return total;
+	 }
+	
 	public static int[][] getinput(String windowMsg)  {
 		Set<String> givenSet;
 		String[] inputArr;
