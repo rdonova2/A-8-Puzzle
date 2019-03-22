@@ -10,6 +10,7 @@ public class Play {
 				
 		int[][] tArr = null;  // start state, i.e. tree root		
 	    int[][] state = null; // end state
+		// Tell user that 0 is blank space?
 		String startState = "Please enter a starting state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		String goalState = "Please enter the goal state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		
