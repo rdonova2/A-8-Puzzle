@@ -9,31 +9,20 @@ public class Play {
 	public static void main(String[] args) {
 				
 		int[][] tArr = null;  // start state, i.e. tree root		
-	    int[][] state = null; // end state
+	    	int[][] state = null; // end state
 		// Tell user that 0 is blank space?
 		String startState = "Please enter a starting state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		String goalState = "Please enter the goal state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		
-        // Ask User for start and end states
-		while(true)  {			
-			tArr = getinput(startState);
-			if(tArr == null)
-				System.exit(0); // User pressed close button || cancel button || empty string.
-			else
-				break; // Data was input correctly.
-		}		
-		while(true)  {			
-			state = getinput(goalState);
-			if(state == null)
-				System.exit(0); 
-			else
-				break; 
-		}
+        	// Ask User for start and end states		
+		tArr = getinput(startState);				
+		state = getinput(goalState);
+
         	
 		GameState start = new GameState(tArr, null); // state with tArr state, null parent		
 		GameState end = new GameState(state, null);
 		explored = new ArrayList<GameState>();  
-		frontier = new ArrayDeque<GameState>(); 
+		frontier = new ArrayDeque<GameState>(); // need to change here.
 		
 		// Perform a Breadth First Search here
 		
@@ -43,7 +32,7 @@ public class Play {
 		frontier.add(start);
 
 		while (!frontier.isEmpty() && !found) {
-			current = frontier.removeFirst();
+			current = frontier.removeFirst(); // need to change here
 
 			if (current.isEnd(end)) {
 				found = true;
