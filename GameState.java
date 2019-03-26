@@ -5,24 +5,17 @@ public class GameState implements Comparable<GameState>{
 	
 	public int[][] state; 
 	public GameState parent; 
+	public String movement;
 	public int score;
 	public int depth;
 	
 	public GameState() {
-		// initialize state to zeros, parent to null
 		this(new int[3][3]);
 	}
 
 	public GameState(int[][] state) {
 		// initialize this.state to state, parent to null
-		this.state = new int[3][3];
-		for (int row = 0; row < 3; row++)
-			for (int col = 0; col < 3; col++)
-				state[row][col] = 0;
-		parent = null;
-		
-		score = 0;
-		depth = 0;
+		this( state, null);
 	}
 
 	public GameState(int[][] state, GameState parent) {
@@ -34,7 +27,14 @@ public class GameState implements Comparable<GameState>{
 		this.parent = parent;
 		
 		score = 0;
-		depth = parent.depth + 1;
+		if(parent != null) {
+			depth = parent.depth + 1;
+			movement = "";
+		}
+		else {
+			movement = "Starting state.";
+			depth = 0;
+		}
 	}
 
 	public GameState swapRight(GameState s, int row, int col) {

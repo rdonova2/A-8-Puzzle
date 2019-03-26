@@ -3,18 +3,18 @@ import java.util.*;
 import javax.swing.*;
 
 public class Play {
-	public static List<GameState> explored; // explored stores our marked vertices
-	public static Deque<GameState> frontier; // frontier is our queue for BFS
+	public static List<GameState> explored; // closed set
+	public static List<GameState> frontier; // open set
 
 	public static void main(String[] args) {
 				
 		int[][] tArr = null;  // start state, i.e. tree root		
-	    	int[][] state = null; // end state
+	    int[][] state = null; // end state
 		// Tell user that 0 is blank space?
 		String startState = "Please enter a starting state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		String goalState = "Please enter the goal state for 8 puzzle. ( eg: 1 2 3 4 5 6 7 8 0 )";
 		
-        	// Ask User for start and end states		
+        // Ask User for start and end states.		
 		tArr = getinput(startState);				
 		state = getinput(goalState);
 
@@ -22,43 +22,46 @@ public class Play {
 		GameState start = new GameState(tArr, null); // state with tArr state, null parent		
 		GameState end = new GameState(state, null);
 		explored = new ArrayList<GameState>();  
-		frontier = new ArrayDeque<GameState>(); // need to change here.
+		frontier = new ArrayList<GameState>(); // need to change here.
 		
-		// Perform a Breadth First Search here
-		
+		// Compute A* 
 		boolean found = false;
 		GameState current = null;
-		explored.add(start);
 		frontier.add(start);
 
 		while (!frontier.isEmpty() && !found) {
-			current = frontier.removeFirst(); // need to change here
-
+			// Sort our open list based on depth + manhattan score. 
+			Collections.sort(frontier);		
+			current = frontier.get(0);
+			frontier.remove(0);
+			
 			if (current.isEnd(end)) {
 				found = true;
-				System.out.println(current);
+				System.out.println(current); // Output needs to be changed. 
 				GameState temp = current.parent;
 				while (temp != null) {
-					System.out.println(temp);
+					System.out.println(temp);  // Output needs to be changed.
 					temp = temp.parent;
 				}
 			}
 			else {
+				// Our current state is not the goal state, we add the current state to closed list and its children to the open list (if they aren't already in closed/open lists).
 				ArrayList<GameState> templist = new ArrayList<GameState>();
 				templist = current.getAdjacent();
+				explored.add(current);
+				
 				for (int i = 0; i < templist.size(); i++)  {
-
 					if (!explored.contains(templist.get(i)) && !frontier.contains(templist.get(i))) {
-						explored.add(templist.get(i));
+						
+						// TODO test manhattan and update value in gamestate objects.
+						templist.get(i).score = ManhattenInt(templist.get(i), end);
+						
 						frontier.add(templist.get(i));
 					}
 				}
 			}
 		}
 	}
-	// Note: We will not create the graph or enumerate the edges
-	// The graph is too large to store in memory
-	// We will create the vertices of the graph and edge connections on the fly
 	
 	public static int ManhattenInt(GameState startState, GameState endState) { 
 		//Take in 2 arrays of start/end positions return the cost of getting there
