@@ -5,7 +5,6 @@ public class GameState implements Comparable<GameState>{
 	
 	public int[][] state; 
 	public GameState parent; 
-	public String movement;
 	public int score;
 	public int depth;
 	
@@ -29,10 +28,8 @@ public class GameState implements Comparable<GameState>{
 		score = 0;
 		if(parent != null) {
 			depth = parent.depth + 1;
-			movement = "";
 		}
 		else {
-			movement = "Starting state.";
 			depth = 0;
 		}
 	}
@@ -176,7 +173,7 @@ public class GameState implements Comparable<GameState>{
 		// 0 1 2
 		// 3 4 5
 		// 6 7 8
-		String string = "";
+		String string = ""; 
 		for (int row = 0; row < 3; row++) {
 			string += "\n";
 			for (int col = 0; col < 3; col++)
